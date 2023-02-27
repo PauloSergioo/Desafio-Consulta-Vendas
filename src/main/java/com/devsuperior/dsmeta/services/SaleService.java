@@ -1,6 +1,8 @@
 package com.devsuperior.dsmeta.services;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,17 +18,31 @@ import com.devsuperior.dsmeta.repositories.SaleRepository;
 @Service
 public class SaleService {
 
-	@Autowired
-	private SaleRepository repository;
-	
-	public SaleMinDTO findById(Long id) {
-		Optional<Sale> result = repository.findById(id);
-		Sale entity = result.get();
-		return new SaleMinDTO(entity);
-	}
+    LocalDate today = LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault());
 
-	public SaleDTO SalesReport(LocalDate min, LocalDate max) {
-		List<SaleMinProjection> result = repository.searchSaleReport(min, max);
-		return result.stream().map(x -> new SaleDTO(x));
-	}
+    @Autowired
+    private SaleRepository repository;
+
+    public SaleMinDTO findById(Long id) {
+        Optional<Sale> result = repository.findById(id);
+        Sale entity = result.get();
+        return new SaleMinDTO(entity);
+    }
+
+    public SaleDTO SalesReport(String min, String max) {
+        LocalDate minResult;
+        LocalDate maxResult;
+        if (min.equals("")) {
+            minResult = today.minusYears(1L);
+        } else {
+            minResult = LocalDate.parse(min);
+        }
+        if (max.equals("")) {
+            maxResult = today;
+        } else {
+            maxResult = LocalDate.parse(max);
+        }
+        SaleMinProjection result = repository.searchSaleReport(minResult, maxResult);
+        return new SaleDTO(result);
+    }
 }

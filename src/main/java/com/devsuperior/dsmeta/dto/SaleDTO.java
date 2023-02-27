@@ -1,35 +1,24 @@
 package com.devsuperior.dsmeta.dto;
 
-import com.devsuperior.dsmeta.entities.Sale;
-
-import java.time.LocalDate;
+import com.devsuperior.dsmeta.projections.SaleMinProjection;
 
 public class SaleDTO {
 
     private String name;
-
-    private LocalDate date;
-
     private Double amount;
 
-    public SaleDTO(String name, LocalDate date, Double amount) {
+    public SaleDTO(String name, Double amount) {
         this.name = name;
-        this.date = date;
         this.amount = amount;
     }
 
-    public SaleDTO(Sale entity) {
-        name = entity.getSeller().getName();
-        date = entity.getDate();
+    public SaleDTO(SaleMinProjection entity) {
+        name = entity.getName();
         amount = entity.getAmount();
     }
 
     public String getName() {
         return name;
-    }
-
-    public LocalDate getDate() {
-        return date;
     }
 
     public Double getAmount() {

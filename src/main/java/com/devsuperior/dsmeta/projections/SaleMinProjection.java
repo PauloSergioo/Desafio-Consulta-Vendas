@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public interface SaleMinProjection {
 
-    String getSellerName();
+    String getName();
     Double getAmount();
 
 }

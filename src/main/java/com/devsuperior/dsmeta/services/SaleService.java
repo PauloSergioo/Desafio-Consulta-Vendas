@@ -8,7 +8,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.devsuperior.dsmeta.dto.SaleDTO;
+import com.devsuperior.dsmeta.dto.SellerDTO;
 import com.devsuperior.dsmeta.projections.SaleMinProjection;
+import com.devsuperior.dsmeta.repositories.SellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,13 +26,16 @@ public class SaleService {
     @Autowired
     private SaleRepository repository;
 
+    @Autowired
+    private SellerRepository repositorySeller;
+
     public SaleMinDTO findById(Long id) {
         Optional<Sale> result = repository.findById(id);
         Sale entity = result.get();
         return new SaleMinDTO(entity);
     }
 
-    public List<SaleDTO> salesReport(String min, String max) {
+    public List<SaleDTO> salesSummary(String min, String max) {
         LocalDate minResult;
         LocalDate maxResult;
         if (min.equals("")) {
@@ -45,5 +50,22 @@ public class SaleService {
         }
         List<SaleMinProjection> result = repository.searchSaleSummary(minResult, maxResult);
         return result.stream().map(SaleDTO::new).collect(Collectors.toList());
+    }
+
+    public List<SellerDTO> sellerReport(String min, String max, String name) {
+        LocalDate minResult;
+        LocalDate maxResult;
+        if (min.equals("")) {
+            minResult = today.minusYears(1L);
+        } else {
+            minResult = LocalDate.parse(min);
+        }
+        if (max.equals("")) {
+            maxResult = today;
+        } else {
+            maxResult = LocalDate.parse(max);
+        }
+        List<SellerRepository> result = repositorySeller.searchSellerReport(minResult, maxResult, name);
+        return result.stream().map(SellerDTO::new).collect(Collectors.toList());
     }
 }

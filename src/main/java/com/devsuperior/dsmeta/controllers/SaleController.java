@@ -36,7 +36,7 @@ public class SaleController {
             @RequestParam(value = "max", defaultValue = "") String max
     )
     {
-        List<SaleDTO> saleDTO = service.salesReport(min, max);
+        List<SaleDTO> saleDTO = service.salesSummary(min, max);
         return ResponseEntity.ok(saleDTO);
     }
 }

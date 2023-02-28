@@ -10,10 +10,10 @@ import java.util.List;
 
 public interface SellerRepository extends JpaRepository<Sale, Long> {
     @Query(nativeQuery = true, value = "SELECT tb_seller.name, SUM(amount) AS total " +
-            "FROM tb_sales \n" +
+            "FROM tb_sales " +
             "INNER JOIN tb_seller ON tb_seller.id = tb_sales.seller_id " +
             "WHERE date BETWEEN '2022-01-01' AND '2022-12-31' " +
             "GROUP BY tb_seller.name " +
             "HAVING UPPER(tb_seller.name) LIKE  UPPER(CONCAT('%', :name, '%'))")
-    List<SaleMinProjection> searchSaleReport(LocalDate min, LocalDate max, String name);
+    List<SellerRepository> searchSellerReport(LocalDate min, LocalDate max, String name);
 }

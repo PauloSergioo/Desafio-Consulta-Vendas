@@ -1,6 +1,7 @@
 package com.devsuperior.dsmeta.controllers;
 
 import com.devsuperior.dsmeta.dto.SaleDTO;
+import com.devsuperior.dsmeta.dto.SellerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,9 +26,14 @@ public class SaleController {
     }
 
     @GetMapping(value = "/report")
-    public ResponseEntity<?> getReport() {
-        // TODO
-        return null;
+    public ResponseEntity<?> getReport(
+            @RequestParam(name = "name", defaultValue = "") String name,
+            @RequestParam(value = "min", defaultValue = "") String min,
+            @RequestParam(value = "max", defaultValue = "") String max
+    )
+    {
+        List<SellerDTO> sellerDTO = service.sellerReport(name, min, max);
+        return ResponseEntity.ok(sellerDTO);
     }
 
     @GetMapping(value = "/summary")

@@ -1,14 +1,13 @@
 package com.devsuperior.dsmeta.repositories;
 
-import com.devsuperior.dsmeta.entities.Sale;
-import com.devsuperior.dsmeta.projections.SaleMinProjection;
+import com.devsuperior.dsmeta.entities.Seller;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public interface SellerRepository extends JpaRepository<Sale, Long> {
+public interface SellerRepository extends JpaRepository<Seller, Long> {
     @Query(nativeQuery = true, value = "SELECT tb_seller.name, SUM(amount) AS total " +
             "FROM tb_sales " +
             "INNER JOIN tb_seller ON tb_seller.id = tb_sales.seller_id " +

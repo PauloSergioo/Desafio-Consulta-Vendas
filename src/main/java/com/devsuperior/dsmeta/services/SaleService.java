@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import com.devsuperior.dsmeta.dto.SaleDTO;
 import com.devsuperior.dsmeta.dto.SellerDTO;
 import com.devsuperior.dsmeta.projections.SaleMinProjection;
+import com.devsuperior.dsmeta.projections.SellerMinProjection;
 import com.devsuperior.dsmeta.repositories.SellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,7 +66,7 @@ public class SaleService {
         } else {
             maxResult = LocalDate.parse(max);
         }
-        List<SellerRepository> result = repositorySeller.searchSellerReport(minResult, maxResult, name);
+        List<SellerMinProjection> result = repositorySeller.searchSellerReport(minResult, maxResult, name);
         return result.stream().map(SellerDTO::new).collect(Collectors.toList());
     }
 }

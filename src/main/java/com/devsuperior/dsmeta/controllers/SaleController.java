@@ -9,6 +9,7 @@ import com.devsuperior.dsmeta.dto.SaleMinDTO;
 import com.devsuperior.dsmeta.services.SaleService;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/sales")
@@ -30,9 +31,12 @@ public class SaleController {
     }
 
     @GetMapping(value = "/summary")
-    public ResponseEntity<SaleDTO> getSummary(
+    public ResponseEntity<List<SaleDTO>> getSummary(
             @RequestParam(value = "min", defaultValue = "") String min,
-            @RequestParam(value = "max", defaultValue = "") String max) {
-        return ResponseEntity.ok(service.SalesReport(min, max));
+            @RequestParam(value = "max", defaultValue = "") String max
+    )
+    {
+        List<SaleDTO> saleDTO = service.salesReport(min, max);
+        return ResponseEntity.ok(saleDTO);
     }
 }

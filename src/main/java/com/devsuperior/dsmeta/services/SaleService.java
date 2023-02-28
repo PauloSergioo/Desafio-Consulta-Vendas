@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.devsuperior.dsmeta.dto.SaleDTO;
 import com.devsuperior.dsmeta.projections.SaleMinProjection;
@@ -29,7 +30,7 @@ public class SaleService {
         return new SaleMinDTO(entity);
     }
 
-    public SaleDTO SalesReport(String min, String max) {
+    public List<SaleDTO> salesReport(String min, String max) {
         LocalDate minResult;
         LocalDate maxResult;
         if (min.equals("")) {
@@ -42,7 +43,7 @@ public class SaleService {
         } else {
             maxResult = LocalDate.parse(max);
         }
-        SaleMinProjection result = repository.searchSaleReport(minResult, maxResult);
-        return new SaleDTO(result);
+        List<SaleMinProjection> result = repository.searchSaleSummary(minResult, maxResult);
+        return result.stream().map(SaleDTO::new).collect(Collectors.toList());
     }
 }

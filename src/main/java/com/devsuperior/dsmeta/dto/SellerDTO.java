@@ -20,6 +20,8 @@ public class SellerDTO {
     }
 
     public SellerDTO(SellerMinProjection entity) {
+        id = entity.getId();
+        date = entity.getDate();
         amount = entity.getAmount();
         name = entity.getName();
     }

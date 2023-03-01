@@ -69,6 +69,6 @@ public class SaleService {
             maxResult = LocalDate.parse(max);
         }
         Page<SellerMinProjection> result = repositorySeller.searchSellerReport(minResult, maxResult, name, pageable);
-        return result.map(x -> new SellerDTO(x));
+        return result.map(SellerDTO::new);
     }
 }

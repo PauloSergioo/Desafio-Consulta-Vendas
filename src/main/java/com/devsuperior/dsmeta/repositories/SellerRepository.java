@@ -11,8 +11,8 @@ import java.time.LocalDate;
 
 public interface SellerRepository extends JpaRepository<Seller, Long> {
     @Query(nativeQuery = true, value = "SELECT tb_sales.date, tb_sales.amount, tb_seller.name " +
-            "FROM tb_seller " +
-            "INNER JOIN tb_sales ON tb_sales.seller_id = tb_seller.id " +
+            "FROM tb_sales " +
+            "INNER JOIN tb_seller ON tb_seller.id = tb_sales.seller_id " +
             "WHERE date BETWEEN :min AND :max AND tb_seller.name LIKE UPPER(CONCAT('%', :name, '%'))")
     Page<SellerMinProjection> searchSellerReport(LocalDate min, LocalDate max, String name, Pageable pageable);
 }

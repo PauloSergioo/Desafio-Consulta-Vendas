@@ -13,6 +13,8 @@ import com.devsuperior.dsmeta.projections.SaleMinProjection;
 import com.devsuperior.dsmeta.projections.SellerMinProjection;
 import com.devsuperior.dsmeta.repositories.SellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.devsuperior.dsmeta.dto.SaleMinDTO;
@@ -53,7 +55,7 @@ public class SaleService {
         return result.stream().map(SaleDTO::new).collect(Collectors.toList());
     }
 
-    public List<SellerDTO> sellerReport(String min, String max, String name) {
+    public Page<SellerDTO> sellerReport(String min, String max, String name, Pageable pageable) {
         LocalDate minResult;
         LocalDate maxResult;
         if (min.equals("")) {
@@ -66,7 +68,7 @@ public class SaleService {
         } else {
             maxResult = LocalDate.parse(max);
         }
-        List<SellerMinProjection> result = repositorySeller.searchSellerReport(minResult, maxResult, name);
-        return result.stream().map(SellerDTO::new).collect(Collectors.toList());
+        Page<SellerMinProjection> result = repositorySeller.searchSellerReport(minResult, maxResult, name, pageable);
+        return result.map(x -> new SellerDTO(x));
     }
 }

@@ -11,7 +11,6 @@ import com.devsuperior.dsmeta.dto.SaleDTO;
 import com.devsuperior.dsmeta.dto.SellerDTO;
 import com.devsuperior.dsmeta.projections.SaleMinProjection;
 import com.devsuperior.dsmeta.projections.SellerMinProjection;
-import com.devsuperior.dsmeta.repositories.SellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,13 +23,8 @@ import com.devsuperior.dsmeta.repositories.SaleRepository;
 @Service
 public class SaleService {
 
-    LocalDate today = LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault());
-
     @Autowired
     private SaleRepository repository;
-
-    @Autowired
-    private SellerRepository repositorySeller;
 
     public SaleMinDTO findById(Long id) {
         Optional<Sale> result = repository.findById(id);
@@ -39,6 +33,7 @@ public class SaleService {
     }
 
     public List<SaleDTO> salesSummary(String min, String max) {
+        LocalDate today = LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault());
         LocalDate minResult;
         LocalDate maxResult;
         if (min.equals("")) {
@@ -56,6 +51,7 @@ public class SaleService {
     }
 
     public Page<SellerDTO> sellerReport(String min, String max, String name, Pageable pageable) {
+        LocalDate today = LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault());
         LocalDate minResult;
         LocalDate maxResult;
         if (min.equals("")) {
@@ -68,7 +64,7 @@ public class SaleService {
         } else {
             maxResult = LocalDate.parse(max);
         }
-        Page<SellerMinProjection> result = repositorySeller.searchSellerReport(minResult, maxResult, name, pageable);
+        Page<SellerMinProjection> result = repository.searchSellerReport(minResult, maxResult, name, pageable);
         return result.map(SellerDTO::new);
     }
 }
